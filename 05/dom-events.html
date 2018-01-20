@@ -1,0 +1,32 @@
+<html>
+    <head>
+      <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+</head>
+<body>
+  <input id="weight-slider" type="range" min="10" max="30"/>
+  <p id="weight-text"></p>
+</body>
+<script>
+  console.clear();
+  
+  // Get elements
+  let weightSliderElem = document.getElementById('weight-slider'); 
+  let weightTextElem = document.getElementById('weight-text');
+  
+  console.log(weightSliderElem);
+  
+  // TODO: create an Observable `weight` which emits the
+  // (current and ongoing) value of weightSliderElem.
+  let weight = Rx.Observable.fromEvent(weightSliderElem, 'input')
+    .map((event) => {
+      return event.target.value;  
+    })
+    .startWith(weightSliderElem.value); // emits the starting value, which is not a product of an event
+  
+  // TODO: subscribe to `weight` and set the innerHTML 
+  // of weightTextElem.
+  let weightSubscription = weight.subscribe((weightVal) => {
+    weightTextElem.innerHTML = weightVal;
+  });
+  </script>
+</html>

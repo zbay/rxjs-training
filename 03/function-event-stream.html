@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+        <script>
+    console.clear();
+
+        // interval: spaces it by 400 ms
+        // take: emits the first 9 entries passed to it
+        let vals = ['1', '1', 'foo', '2', '3', '5', 'bar', '8', '13'];
+        let source = Rx.Observable.interval(400).take(9)
+            .map((i) => {
+                return vals[i];
+            });
+
+        // TODO: Create an Observable `result` that emits the 
+        // sum of all numbers in source. Use pure functions
+        // such as map, filter, reduce, scan, merge, delay, 
+        // concat, take, etc.
+        /*
+        1. Scan: Like reduce but emits at every step along the way instead of just at the end
+        2. Merge: merges two observable streams
+        3. Delay: Delays emissions by ms
+        */
+        let result = source.map((val) => {
+            return 1 * val;
+        })
+        .filter((val) => {
+            return !isNaN(val);
+        })
+        .scan((sum, val) => {
+            return sum + val;
+        }, 0);
+
+        result.subscribe(x => console.log(x));
+        </script>
+    </head>
+</html>

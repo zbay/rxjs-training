@@ -1,0 +1,42 @@
+<html>
+    <head>
+      <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+      <script>
+      console.clear();
+
+      /*let promise = new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          console.log('timeout');
+          resolve(123);
+        }, 1000);
+        console.log('promise started');
+      });
+
+      promise.then(x => console.log('resolved: ' + x));*/
+
+    // TODO: Create an RxJS Observable `observable` with 
+    // the same behavior as the promise above, but also 
+    // clear the timeout when the Observable is disposed.
+    let observable = Rx.Observable.create(function(observer){
+      let timeout = setTimeout(function(observer){
+        console.log("timeout");
+        observer.next(123);
+      }, 1000);
+      console.log("Observable started");
+      return function onUnsubscribe(){
+        clearTimeout(timeout);
+      }
+    });
+
+    let subscription = observable.subscribe(x => console.log('next: ' + x));
+
+    // TODO: After 500ms, dispose the subscription.
+    setTimeout(function(){
+      subscription.unsubscribe();
+      console.log("Unsubscribed!");
+    }, 500);
+      </script>
+  </head>
+</html>
+
+

@@ -1,0 +1,23 @@
+<html>
+    <head>
+      <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+<script>
+console.clear();
+
+var clock = Rx.Observable.interval(100).take(10);
+
+function delay(source, interval) {
+  // TODO: implement this function using flatMap().
+  // You should return an Observable.
+  
+  // flatMap() maps, then flattens. takes a many-valued observable and consolidates it into one value.
+  // emits all values at once, after specified delay
+  return source.flatMap((val) => {
+    return Rx.Observable.interval(interval).first().map(() => val);
+  });
+}
+
+delay(clock, 2000).subscribe(x => console.log(x));
+</script>
+</head>
+</html>

@@ -1,3 +1,25 @@
+<html>
+    <head>
+      <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+</head>
+<body>
+  <div class="form-group">
+    <label>Weight (lbs):</label>
+    <input id="weight-slider" type="range" min="1" max="701"/>
+  </div>
+  <p id="weight-text"></p>
+  <div class="form-group">
+    <label>Height (inches)</label>
+    <input id="height-slider" type="range" min="10" max="100"/>
+  </div>
+  <div class="form-group">
+    <label>Height (inches)</label>
+    <input type="text" id="height-edit-text"/>
+  </div>
+  <p id="height-text"></p>
+  <p>BMI: <span id="bmi-text"></span></p>
+</body>
+<script>
 console.clear();
 
 // Get elements
@@ -19,12 +41,24 @@ var height1 = Rx.Observable.fromEvent(heightSliderElem, 'input')
 
 var height2 = Rx.Observable.fromEvent(heightEditTextElem, 'input')
   .map(ev => parseInt(ev.target.value))
-  .startWith(heightEditTextElem.value);
+  .startWith(heightSliderElem.value);
 
 // TODO: create the Observable `bmi` which depends on
 // Observables `weight` AND [`height1` OR `height2`].
+let bmi = Rx.Observable.combineLatest(weight, height1.merge(height2), function computeBMI(weightVal, heightVal){
+  return weightVal / (heightVal * heightVal) * 703;
+});
 
 // Subscriptions
 weight.subscribe(x => weightTextElem.innerHTML = x);
-height1.subscribe(x => heightTextElem.innerHTML = x);
+height1.subscribe((x) => {
+  heightTextElem.innerHTML = x;
+  heightEditTextElem.value = x;
+});
+height2.subscribe((x) => {
+  heightTextElem.innerHTML = x;
+  heightSliderElem.value = x;
+});
 bmi.subscribe(x => bmiTextElem.innerHTML = x);
+</script>
+</html>

@@ -1,0 +1,52 @@
+<html>
+    <head>
+      <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+<script>
+</script>
+</head>
+<body>
+  <div class="form-group">
+    <label>Weight (lbs):</label>
+    <input id="weight-slider" type="range" min="1" max="701"/>
+  </div>
+  <p id="weight-text"></p>
+  <div class="form-group">
+    <label>Height (inches)</label>
+    <input id="height-slider" type="range" min="10" max="100"/>
+  </div>
+  <p id="height-text"></p>
+  <p>BMI: <span id="bmi-text"></span></p>
+</body>
+<script>
+console.clear();
+
+// Get elements
+let weightSliderElem = document.querySelector('#weight-slider'); 
+let weightTextElem = document.querySelector('#weight-text');
+let heightSliderElem = document.querySelector('#height-slider'); 
+let heightTextElem = document.querySelector('#height-text');
+let bmiTextElem = document.querySelector('#bmi-text');
+
+// Observables
+let weight = Rx.Observable.fromEvent(weightSliderElem, 'input')
+  .map(ev => ev.target.value)
+  .startWith(weightSliderElem.value);
+
+let height = Rx.Observable.fromEvent(heightSliderElem, 'input')
+  .map(ev => ev.target.value)
+  .startWith(heightSliderElem.value);
+
+// TODO: create the Observable `bmi` which depends on
+// Observables `weight` and `height` and is calculated
+// as BMI = w / h*h, where w is the weight in pounds,
+// and h is the height in inches.
+let bmi = Rx.Observable.combineLatest(weight, height, function computeBMI(weightVal, heightVal){
+  return weightVal / (heightVal * heightVal) * 703;
+});
+
+// Subscriptions
+weight.subscribe(x => weightTextElem.innerHTML = x);
+height.subscribe(x => heightTextElem.innerHTML = x);
+bmi.subscribe(x => bmiTextElem.innerHTML = x);
+</script>
+</html>

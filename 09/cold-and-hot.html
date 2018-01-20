@@ -1,0 +1,24 @@
+<html>
+    <head>
+      <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+<script>
+console.clear();
+
+let clock = Rx.Observable.interval(1000).take(10).map(x => x+1)
+  .publish()
+  .refCount();
+  // publish turns an observable into a cold multicast, meaning it only emits once connected to. Enables multicast
+  // refCount connects, keeps track of the subscribers, and handles unsubscription cleanup
+  
+setTimeout(() => {
+  clock.subscribe(x => console.log(`     b: ${x}`))
+}, 4500);
+
+clock.subscribe(x => console.log(`a: ${x}`));
+
+// TODO: Fix this code so that both subscribers log
+// the same events at the same time.
+
+</script>
+</head>
+</html>

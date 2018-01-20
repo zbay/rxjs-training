@@ -1,3 +1,10 @@
+<html>
+    <head>
+      <script src="https://npmcdn.com/rxjs@5.0.0-beta.1/bundles/Rx.umd.js"></script>
+<script>
+</script>
+</head>
+</html>
 const {Rx, h} = Cycle;
 
 function main({DOM}) {
